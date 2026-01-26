@@ -2,7 +2,7 @@
   "id": "video-sam3-wan-animate-mask-ref",
   "revision": 0,
   "last_node_id": 17,
-  "last_link_id": 29,
+  "last_link_id": 30,
   "nodes": [
     {
       "id": 1,
@@ -312,7 +312,8 @@
           "type": "IMAGE",
           "links": [
             13,
-            19
+            19,
+            30
           ]
         },
         {
@@ -329,55 +330,6 @@
       "widgets_values": [
         "reference.jpg",
         "image"
-      ]
-    },
-    {
-      "id": 7,
-      "type": "ImageBatchRepeatInterleaving",
-      "pos": [
-        860.0,
-        520.0
-      ],
-      "size": [
-        270.0,
-        82.0
-      ],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 13
-        },
-        {
-          "name": "repeats",
-          "type": "INT",
-          "link": 12
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            14
-          ]
-        },
-        {
-          "name": "MASK",
-          "type": "MASK",
-          "links": []
-        }
-      ],
-      "properties": {
-        "cnr_id": "comfyui-kjnodes",
-        "ver": "eeb797736bf96fe440d8266ff155007fdeba5665",
-        "Node name for S&R": "ImageBatchRepeatInterleaving"
-      },
-      "widgets_values": [
-        1
       ]
     },
     {
@@ -842,7 +794,7 @@
       ],
       "properties": {
         "cnr_id": "ComfyUI-WanVideoWrapper",
-        "ver": "2bdd81a10b03c14443c79bdf3b783b1feb3d1fa3",
+        "ver": "761b1d191e50d589465e31dc0d40ff7c59b1b7b0",
         "Node name for S&R": "WanVideoTextEncodeCached"
       },
       "widgets_values": [
@@ -940,7 +892,7 @@
         {
           "name": "ref_images",
           "type": "IMAGE",
-          "link": 14
+          "link": 30
         },
         {
           "name": "pose_images",
@@ -1037,7 +989,7 @@
       ],
       "properties": {
         "cnr_id": "ComfyUI-WanVideoWrapper",
-        "ver": "2bdd81a10b03c14443c79bdf3b783b1feb3d1fa3",
+        "ver": "761b1d191e50d589465e31dc0d40ff7c59b1b7b0",
         "Node name for S&R": "WanVideoAnimateEmbeds"
       },
       "widgets_values": [
@@ -1605,46 +1557,6 @@
       "INT"
     ],
     [
-      12,
-      13,
-      3,
-      7,
-      1,
-      "INT"
-    ],
-    [
-      13,
-      6,
-      0,
-      7,
-      0,
-      "IMAGE"
-    ],
-    [
-      14,
-      7,
-      0,
-      14,
-      2,
-      "IMAGE"
-    ],
-    [
-      15,
-      7,
-      0,
-      14,
-      3,
-      "IMAGE"
-    ],
-    [
-      16,
-      7,
-      0,
-      14,
-      4,
-      "IMAGE"
-    ],
-    [
       17,
       1,
       0,
@@ -1747,6 +1659,14 @@
       14,
       6,
       "MASK"
+    ],
+    [
+      30,
+      6,
+      0,
+      14,
+      2,
+      "IMAGE"
     ]
   ],
   "groups": [],
