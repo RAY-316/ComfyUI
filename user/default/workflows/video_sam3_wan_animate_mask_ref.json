@@ -2,7 +2,7 @@
   "id": "video-sam3-wan-animate-mask-ref",
   "revision": 0,
   "last_node_id": 17,
-  "last_link_id": 28,
+  "last_link_id": 29,
   "nodes": [
     {
       "id": 1,
@@ -265,7 +265,8 @@
           "name": "masks",
           "type": "MASK",
           "links": [
-            7
+            7,
+            29
           ]
         },
         {
@@ -959,7 +960,7 @@
         {
           "name": "mask",
           "type": "MASK",
-          "link": 7
+          "link": 29
         },
         {
           "name": "width",
@@ -1572,14 +1573,6 @@
       "SAM3_VIDEO_STATE"
     ],
     [
-      7,
-      5,
-      0,
-      14,
-      6,
-      "MASK"
-    ],
-    [
       8,
       1,
       0,
@@ -1746,6 +1739,14 @@
       17,
       1,
       "AUDIO"
+    ],
+    [
+      29,
+      5,
+      0,
+      14,
+      6,
+      "MASK"
     ]
   ],
   "groups": [],
