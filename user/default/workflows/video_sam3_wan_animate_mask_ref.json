@@ -897,12 +897,12 @@
         {
           "name": "pose_images",
           "type": "IMAGE",
-          "link": 15
+          "link": null
         },
         {
           "name": "face_images",
           "type": "IMAGE",
-          "link": 16
+          "link": null
         },
         {
           "name": "bg_images",
