@@ -1,8 +1,8 @@
 {
     "id": "8b7a9a57-2303-4ef5-9fc2-bf41713bd1fc",
     "revision": 0,
-    "last_node_id": 189,
-    "last_link_id": 332,
+    "last_node_id": 188,
+    "last_link_id": 333,
     "nodes": [
         {
             "id": 66,
@@ -171,8 +171,7 @@
                     "name": "IMAGE",
                     "type": "IMAGE",
                     "links": [
-                        236,
-                        328
+                        236
                     ]
                 }
             ],
@@ -2599,7 +2598,7 @@
                     "name": "image",
                     "type": "IMAGE",
                     "links": [
-                        327
+                        326
                     ]
                 },
                 {
@@ -2608,7 +2607,8 @@
                     "name": "width",
                     "type": "INT",
                     "links": [
-                        329
+                        327,
+                        330
                     ]
                 },
                 {
@@ -2617,7 +2617,8 @@
                     "name": "height",
                     "type": "INT",
                     "links": [
-                        330
+                        328,
+                        331
                     ]
                 },
                 {
@@ -3168,7 +3169,7 @@
                 {
                     "name": "IMAGE",
                     "type": "IMAGE",
-                    "link": 332
+                    "link": 333
                 }
             ],
             "outputs": [
@@ -3210,7 +3211,7 @@
                 {
                     "name": "IMAGE",
                     "type": "IMAGE",
-                    "link": 331
+                    "link": 332
                 }
             ],
             "outputs": [
@@ -3913,127 +3914,6 @@
             ]
         },
         {
-            "id": 189,
-            "type": "efa5d183-0218-4a35-ac44-a75843de6aa7",
-            "pos": [
-                104.5530014038086,
-                -3028.416015625
-            ],
-            "size": [
-                255.06897692691223,
-                166
-            ],
-            "flags": {},
-            "order": 52,
-            "mode": 0,
-            "inputs": [
-                {
-                    "label": "姿势检测模型",
-                    "name": "model",
-                    "type": "POSEMODEL",
-                    "link": 326
-                },
-                {
-                    "label": "视频帧",
-                    "name": "image",
-                    "type": "IMAGE",
-                    "link": 327
-                },
-                {
-                    "label": "视频帧遮罩",
-                    "name": "layer_mask",
-                    "type": "MASK",
-                    "link": 325
-                },
-                {
-                    "label": "是否使用遮罩",
-                    "name": "boolean",
-                    "type": "BOOLEAN",
-                    "widget": {
-                        "name": "boolean"
-                    },
-                    "link": null
-                },
-                {
-                    "label": "参考图像",
-                    "name": "image_1",
-                    "type": "IMAGE",
-                    "link": 328
-                },
-                {
-                    "label": "视频宽度",
-                    "name": "width",
-                    "type": "INT",
-                    "widget": {
-                        "name": "width"
-                    },
-                    "link": 329
-                },
-                {
-                    "label": "视频高度",
-                    "name": "height",
-                    "type": "INT",
-                    "widget": {
-                        "name": "height"
-                    },
-                    "link": 330
-                }
-            ],
-            "outputs": [
-                {
-                    "label": "参考图像",
-                    "name": "IMAGE",
-                    "type": "IMAGE",
-                    "links": []
-                },
-                {
-                    "label": "姿势图像帧",
-                    "name": "pose_images",
-                    "type": "IMAGE",
-                    "links": [
-                        331
-                    ]
-                },
-                {
-                    "label": "面部图像帧",
-                    "name": "face_images",
-                    "type": "IMAGE",
-                    "links": [
-                        332
-                    ]
-                }
-            ],
-            "properties": {
-                "proxyWidgets": [
-                    [
-                        "-1",
-                        "boolean"
-                    ],
-                    [
-                        "-1",
-                        "width"
-                    ],
-                    [
-                        "-1",
-                        "height"
-                    ]
-                ],
-                "cnr_id": "comfy-core",
-                "ver": "0.3.67",
-                "ue_properties": {
-                    "version": "7.0.1",
-                    "widget_ue_connectable": {
-                        "boolean": true
-                    }
-                }
-            },
-            "widgets_values": [
-                true,
-                832,
-                480
-            ]
-        },
-        {
             "id": 187,
             "type": "easy sam3VideoSegmentation",
             "pos": [
@@ -4284,8 +4164,7 @@
                     "name": "mask",
                     "type": "MASK",
                     "links": [
-                        324,
-                        325
+                        324
                     ]
                 }
             ],
@@ -4646,7 +4525,7 @@
                     "name": "model",
                     "type": "POSEMODEL",
                     "links": [
-                        326
+                        325
                     ]
                 }
             ],
@@ -5075,6 +4954,150 @@
             ],
             "color": "#322",
             "bgcolor": "#533"
+        },
+        {
+            "id": 172,
+            "type": "PoseAndFaceDetection",
+            "pos": [
+                104.5530014038086,
+                -3028.416015625
+            ],
+            "size": [
+                313.125,
+                142
+            ],
+            "flags": {},
+            "order": 50,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "model",
+                    "type": "POSEMODEL",
+                    "link": 325
+                },
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 326
+                },
+                {
+                    "name": "retarget_image",
+                    "shape": 7,
+                    "type": "IMAGE",
+                    "link": null
+                },
+                {
+                    "name": "width",
+                    "type": "INT",
+                    "widget": {
+                        "name": "width"
+                    },
+                    "link": 327
+                },
+                {
+                    "name": "height",
+                    "type": "INT",
+                    "widget": {
+                        "name": "height"
+                    },
+                    "link": 328
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "pose_data",
+                    "type": "POSEDATA",
+                    "links": [
+                        329
+                    ]
+                },
+                {
+                    "name": "face_images",
+                    "type": "IMAGE",
+                    "links": [
+                        333
+                    ]
+                },
+                {
+                    "name": "key_frame_body_points",
+                    "type": "STRING",
+                    "links": null
+                },
+                {
+                    "name": "bboxes",
+                    "type": "BBOX",
+                    "links": []
+                }
+            ],
+            "properties": {
+                "aux_id": "kijai/ComfyUI-WanAnimatePreprocess",
+                "ver": "e63d6e71ae4c271f3f81211a7ca7f87607b7e50d",
+                "Node name for S&R": "PoseAndFaceDetection"
+            },
+            "widgets_values": [
+                832,
+                480
+            ]
+        },
+        {
+            "id": 173,
+            "type": "DrawViTPose",
+            "pos": [
+                120.56317138671875,
+                -2811.226318359375
+            ],
+            "size": [
+                270,
+                178
+            ],
+            "flags": {},
+            "order": 52,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "pose_data",
+                    "type": "POSEDATA",
+                    "link": 329
+                },
+                {
+                    "name": "width",
+                    "type": "INT",
+                    "widget": {
+                        "name": "width"
+                    },
+                    "link": 330
+                },
+                {
+                    "name": "height",
+                    "type": "INT",
+                    "widget": {
+                        "name": "height"
+                    },
+                    "link": 331
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "pose_images",
+                    "type": "IMAGE",
+                    "links": [
+                        332
+                    ]
+                }
+            ],
+            "properties": {
+                "aux_id": "kijai/ComfyUI-WanAnimatePreprocess",
+                "ver": "e63d6e71ae4c271f3f81211a7ca7f87607b7e50d",
+                "Node name for S&R": "DrawViTPose"
+            },
+            "widgets_values": [
+                832,
+                480,
+                16,
+                -1,
+                -1,
+                "True"
+            ]
         }
     ],
     "links": [
@@ -5528,64 +5551,72 @@
         ],
         [
             325,
-            188,
-            0,
-            189,
-            2,
-            "MASK"
-        ],
-        [
-            326,
             178,
             0,
-            189,
+            172,
             0,
             "POSEMODEL"
         ],
         [
-            327,
+            326,
             180,
             0,
-            189,
+            172,
             1,
             "IMAGE"
+        ],
+        [
+            327,
+            180,
+            1,
+            172,
+            3,
+            "INT"
         ],
         [
             328,
-            134,
-            0,
-            189,
+            180,
+            2,
+            172,
             4,
-            "IMAGE"
+            "INT"
         ],
         [
             329,
-            180,
-            1,
-            189,
-            5,
-            "INT"
+            172,
+            0,
+            173,
+            0,
+            "POSEDATA"
         ],
         [
             330,
             180,
-            2,
-            189,
-            6,
+            1,
+            173,
+            1,
             "INT"
         ],
         [
             331,
-            189,
-            1,
+            180,
+            2,
+            173,
+            2,
+            "INT"
+        ],
+        [
+            332,
+            173,
+            0,
             184,
             0,
             "IMAGE"
         ],
         [
-            332,
-            189,
-            2,
+            333,
+            172,
+            1,
             183,
             0,
             "IMAGE"
