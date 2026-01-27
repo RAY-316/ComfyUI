@@ -21,3 +21,4 @@ web_custom_versions/
 openapi.yaml
 filtered-openapi.yaml
 uv.lock
+custom_nodes/ComfyUI-Easy-*
