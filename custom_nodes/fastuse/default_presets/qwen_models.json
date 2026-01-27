@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Qwen/Qwen3-VL-8B-Instruct"
+  },
+  {
+    "name": "Qwen/Qwen3-VL-4B-Instruct"
+  },
+    {
+    "name": "huihui-ai/Huihui-Qwen3-VL-8B-Instruct-abliterated"
+  },
+  {
+    "name": "huihui-ai/Huihui-Qwen3-VL-4B-Instruct-abliterated"
+  },
+  {
+    "name": "Qwen/Qwen2.5-VL-7B-Instruct"
+  }
+]

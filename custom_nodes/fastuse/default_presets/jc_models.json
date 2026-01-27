@@ -1,0 +1,14 @@
+[
+  {
+    "name": "unsloth/Meta-Llama-3.1-8B-Instruct",
+    "version": 2
+  },
+  {
+    "name": "Orenguteng/Llama-3.1-8B-Lexi-Uncensored-V2",
+    "version": 2
+  },
+  {
+    "name": "fancyfeast/llama-joycaption-beta-one-hf-llava",
+    "version": 3
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "name": "microsoft/Florence-2-base"
+  },
+  {
+    "name": "microsoft/Florence-2-base-ft"
+  },
+  {
+    "name": "microsoft/Florence-2-large"
+  },
+  {
+    "name": "microsoft/Florence-2-large-ft"
+  },
+  {
+    "name": "MiaoshouAI/Florence-2-base-PromptGen-v1.5"
+  },
+  {
+    "name": "MiaoshouAI/Florence-2-large-PromptGen-v1.5"
+  },
+  {
+    "name": "MiaoshouAI/Florence-2-large-PromptGen-v2.0"
+  }
+]
