@@ -22,3 +22,4 @@ openapi.yaml
 filtered-openapi.yaml
 uv.lock
 custom_nodes/ComfyUI-Easy-*
+15_pictures/output/
