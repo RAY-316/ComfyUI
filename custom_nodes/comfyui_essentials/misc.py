@@ -27,6 +27,10 @@ class SimpleMath:
         import ast
         import operator as op
 
+        # ========== DEBUG: SimpleMath input ==========
+        print(f"[DEBUG SimpleMath] Input: value='{value}', a={a}, b={b}")
+        # ==============================================
+
         operators = {
             ast.Add: op.add,
             ast.Sub: op.sub,
@@ -38,6 +42,17 @@ class SimpleMath:
             ast.USub: op.neg,
             ast.Mod: op.mod,
         }
+        
+        # ========== FIX: Add comparison operators ==========
+        compare_ops = {
+            ast.Lt: op.lt,      # <
+            ast.LtE: op.le,     # <=
+            ast.Gt: op.gt,      # >
+            ast.GtE: op.ge,     # >=
+            ast.Eq: op.eq,      # ==
+            ast.NotEq: op.ne,   # !=
+        }
+        # ===================================================
 
         op_functions = {
             'min': min,
@@ -50,6 +65,8 @@ class SimpleMath:
         def eval_(node):
             if isinstance(node, ast.Num): # number
                 return node.n
+            elif isinstance(node, ast.Constant): # Python 3.8+ uses ast.Constant
+                return node.value
             elif isinstance(node, ast.Name): # variable
                 if node.id == "a":
                     return a
@@ -59,6 +76,18 @@ class SimpleMath:
                 return operators[type(node.op)](eval_(node.left), eval_(node.right))
             elif isinstance(node, ast.UnaryOp): # <operator> <operand> e.g., -1
                 return operators[type(node.op)](eval_(node.operand))
+            elif isinstance(node, ast.Compare): # comparison operations like a < b, a >= b
+                # ========== FIX: Handle comparison operators ==========
+                left = eval_(node.left)
+                for comp_op, comparator in zip(node.ops, node.comparators):
+                    right = eval_(comparator)
+                    if type(comp_op) in compare_ops:
+                        result = compare_ops[type(comp_op)](left, right)
+                        # Return 1 for True, 0 for False (for use in arithmetic)
+                        return 1 if result else 0
+                    left = right
+                return 0
+                # ======================================================
             elif isinstance(node, ast.Call): # custom function
                 if node.func.id in op_functions:
                     args =[eval_(arg) for arg in node.args]
@@ -70,9 +99,16 @@ class SimpleMath:
                 else:
                     return 0
             else:
+                # ========== DEBUG: Unhandled node type ==========
+                print(f"[DEBUG SimpleMath] WARNING: Unhandled AST node type: {type(node).__name__}, returning 0")
+                # =================================================
                 return 0
 
         result = eval_(ast.parse(value, mode='eval').body)
+        
+        # ========== DEBUG: SimpleMath output ==========
+        print(f"[DEBUG SimpleMath] Output: INT={round(result)}, FLOAT={result}")
+        # ==============================================
 
         if math.isnan(result):
             result = 0.0
