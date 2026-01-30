@@ -22,7 +22,7 @@ ANGLE_OUTPUT_DIR = BASE_DIR / "15_pictures" / "output"
 
 COMFY_URL = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
 SERVER_HOST = os.environ.get("SHOW_ANIMATE_HOST", "127.0.0.1")
-SERVER_PORT = int(os.environ.get("SHOW_ANIMATE_PORT", "8090"))
+SERVER_PORT = int(os.environ.get("SHOW_ANIMATE_PORT", "8058"))
 PUBLIC_BASE_URL = os.environ.get("SHOW_ANIMATE_PUBLIC_URL")
 
 SAFE_NAME_RE = re.compile(r"[^a-zA-Z0-9._-]+")
@@ -357,6 +357,17 @@ async def handle_video_upload(request: web.Request) -> web.Response:
     return web.json_response({"filename": filename, "video_info": info})
 
 
+async def handle_video_list(request: web.Request) -> web.Response:
+    videos = []
+    if INPUT_DIR.exists():
+        for item in sorted(INPUT_DIR.iterdir(), key=lambda p: p.name):
+            if item.is_file() and item.suffix.lower() in {
+                ".mp4", ".mov", ".webm", ".mkv", ".avi", ".m4v", ".mpg", ".mpeg", ".wmv"
+            }:
+                videos.append(item.name)
+    return web.json_response({"videos": videos})
+
+
 async def handle_sam3_run(request: web.Request) -> web.Response:
     data = await request.json()
     filename = data.get("video_filename", "")
@@ -473,7 +484,7 @@ async def handle_infer_run(request: web.Request) -> web.Response:
 
     # CharacterConfigWidget
     prompt["182"]["inputs"].update({
-        "root_path": str(ANGLE_OUTPUT_DIR),
+        "root_path": str(ANGLE_OUTPUT_DIR) + os.sep,
         "character_1": character_folder,
     })
 
@@ -519,6 +530,7 @@ def create_app() -> web.Application:
     app.router.add_get("/api/angles/files/{folder}/{filename}", handle_angle_file)
     app.router.add_post("/api/angles/generate", handle_angles_generate)
     app.router.add_post("/api/video/upload", handle_video_upload)
+    app.router.add_get("/api/video/list", handle_video_list)
     app.router.add_post("/api/sam3/run", handle_sam3_run)
     app.router.add_post("/api/infer/run", handle_infer_run)
     return app

@@ -158,6 +158,34 @@ async function uploadVideo(file) {
   setStatus(status, `上传完成：${data.filename}`);
 }
 
+async function loadInputVideos() {
+  const data = await fetchJSON("/api/video/list");
+  state.videos = data.videos || [];
+
+  const sam3Select = qs("sam3-video-list");
+  sam3Select.innerHTML = "";
+  state.videos.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    sam3Select.appendChild(option);
+  });
+
+  const inferSelect = qs("infer-video");
+  inferSelect.innerHTML = "";
+  state.videos.forEach((name) => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    inferSelect.appendChild(option);
+  });
+
+  if (!state.currentVideo && state.videos[0]) {
+    state.currentVideo = state.videos[0];
+    sam3Select.value = state.currentVideo;
+  }
+}
+
 async function handleSam3Run() {
   const status = qs("sam3-status");
   if (!state.currentVideo) {
@@ -240,8 +268,13 @@ async function init() {
       setStatus(qs("sam3-status"), `上传失败：${err.message}`, "error");
     });
   });
+  qs("sam3-video-list").addEventListener("change", (event) => {
+    state.currentVideo = event.target.value;
+    setStatus(qs("sam3-status"), `已选择视频：${state.currentVideo}`);
+  });
 
   await loadAngleFolders();
+  await loadInputVideos();
 }
 
 init();
