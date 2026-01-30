@@ -1,7 +1,7 @@
 # Wan Animate 2.2 换人展示项目说明
 
-工作流位置：
-`user/default/workflows/base_换人5090.json`
+API 工作流位置：
+`user/default/workflows/换人_api.json`
 
 本项目已实现一个可展示的前端页面 + Python 后端，覆盖：
 1) 15 角度角色图生成
