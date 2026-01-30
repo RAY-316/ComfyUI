@@ -33,7 +33,7 @@ API 工作流位置：
 
 3. 打开浏览器：
    ```
-   http://127.0.0.1:8090
+   http://127.0.0.1:8058
    ```
 
 ---
@@ -90,7 +90,7 @@ API 工作流位置：
 
 ## ✅ 环境变量（可选）
 - `COMFY_URL`：ComfyUI API 地址（默认 `http://127.0.0.1:8188`）
-- `SHOW_ANIMATE_PORT`：展示页端口（默认 `8090`）
+- `SHOW_ANIMATE_PORT`：展示页端口（默认 `8058`）
 - `WAVESPEED_API_KEY`：15 角度生图 API key（可覆盖脚本内的默认值）
 
 ---
@@ -127,7 +127,10 @@ https://wavespeed.ai/docs/docs-api/wavespeed-ai/qwen-image-edit-multiple-angles
    - 前端增加 loading 状态与提示（⏳）\n
    - 请求执行期间显示“推理中/上传中/生成中”\n
 
+4. **SAM3 使用已有视频**：\n
+   - 新增 `/api/video/list` 接口读取 `input/` 内的视频（不限 mp4）\n
+   - 前端可从下拉列表选择已有视频，无需每次上传\n
+
 ## ✅ 需要你确认的点
-1. `SHOW_ANIMATE_PUBLIC_URL` 填什么？\n
-   - 如果部署在公网：填外网地址（例如 `https://your.domain.com`）\n
-   - WaveSpeed 需要能够访问这个 URL 才能拉到图片\n
+1. `SHOW_ANIMATE_PUBLIC_URL` 暂时不用也可以\n
+   - 只有“本地图片上传”需要公网可访问 URL\n
