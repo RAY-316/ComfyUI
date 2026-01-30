@@ -216,7 +216,7 @@ async function handleSam3Run() {
 
 async function handleInferRun() {
   const status = qs("infer-status");
-  const video = qs("infer-video").value;
+  const video = state.currentVideo || qs("infer-video").value;
   const character = qs("infer-character").value;
   if (!video || !character) {
     setStatus(status, "请选择视频和角色图文件夹", "warn");
@@ -248,6 +248,16 @@ async function handleInferRun() {
 }
 
 async function init() {
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+      btn.classList.add("active");
+      const target = btn.dataset.tab === "main" ? "tab-main" : "tab-details";
+      qs(target).classList.add("active");
+    });
+  });
+
   qs("angle-generate").addEventListener("click", handleAngleGenerate);
   qs("angle-show").addEventListener("click", () => {
     const folder = qs("angle-folder").value;

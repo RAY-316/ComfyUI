@@ -22,46 +22,16 @@
 
   <main class="container">
     <section class="panel">
-      <div class="panel__header">
-        <div>
-          <h2>1. 15角度角色图生成</h2>
-          <p>输入图片 URL，生成 15 张视角图，结果会落在 <code>15_pictures/output</code> 下。</p>
-        </div>
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="main">快速生成</button>
+        <button class="tab-btn" data-tab="details">图片 / 遮罩</button>
       </div>
-      <div class="form-grid">
-        <label>
-          本地图片上传
-          <input id="angle-file" type="file" accept="image/*" />
-        </label>
-        <label>
-          图片 URL
-          <input id="angle-url" type="text" placeholder="https://..." />
-        </label>
-        <label>
-          文件夹命名（可选）
-          <input id="angle-name" type="text" placeholder="例如：actor_01" />
-        </label>
-        <button id="angle-generate" class="btn">开始生成</button>
-      </div>
-      <div class="status" id="angle-status"></div>
-      <details class="advanced">
-        <summary>查看已生成文件夹</summary>
-        <div class="form-grid">
-          <label>
-            选择文件夹
-            <select id="angle-folder"></select>
-          </label>
-          <button id="angle-show" class="btn btn-ghost">展示</button>
-        </div>
-        <div class="gallery" id="angle-gallery"></div>
-      </details>
-    </section>
 
-    <section class="panel">
+      <div class="tab-panel active" id="tab-main">
       <div class="panel__header">
         <div>
-          <h2>2. SAM3 视频分割</h2>
-          <p>上传视频，选择传播方向，查看可视化结果与 object_id。</p>
+          <h2>一键生成</h2>
+          <p>上传/选择视频 + 选择角色图文件夹，即可按默认参数生成结果。</p>
         </div>
       </div>
       <div class="form-grid">
@@ -74,36 +44,6 @@
           <select id="sam3-video-list"></select>
         </label>
         <label>
-          传播方式
-          <select id="sam3-direction">
-            <option value="forward">从第一帧正向传播</option>
-            <option value="both">从中间帧双向传播</option>
-            <option value="backward">从尾帧反向传播</option>
-          </select>
-        </label>
-        <label>
-          文本提示词（默认 person）
-          <input id="sam3-prompt" type="text" placeholder="person" />
-        </label>
-        <button id="sam3-run" class="btn">开始分割</button>
-      </div>
-      <div class="status" id="sam3-status"></div>
-      <div class="media" id="sam3-media"></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel__header">
-        <div>
-          <h2>3. 换人推理</h2>
-          <p>选择角色图文件夹与 object_id，保持流程不变，仅暴露核心参数。</p>
-        </div>
-      </div>
-      <div class="form-grid">
-        <label>
-          使用视频
-          <select id="infer-video"></select>
-        </label>
-        <label>
           角色图文件夹
           <select id="infer-character"></select>
         </label>
@@ -111,31 +51,93 @@
           object_id
           <input id="infer-object" type="number" value="0" />
         </label>
-        <label>
-          image_index
-          <input id="infer-index" type="text" value="0, 6, 5" />
-        </label>
-        <button id="infer-run" class="btn">开始推理</button>
+        <button id="infer-run" class="btn">开始生成</button>
       </div>
-      <details class="advanced">
-        <summary>高级参数</summary>
-        <div class="form-grid">
-          <label>
-            mask_expand
-            <input id="infer-expand" type="number" value="40" />
-          </label>
-          <label>
-            block_size
-            <input id="infer-block" type="number" value="16" />
-          </label>
-          <label>
-            seed
-            <input id="infer-seed" type="number" value="28588" />
-          </label>
-        </div>
-      </details>
       <div class="status" id="infer-status"></div>
       <div class="media" id="infer-media"></div>
+      </div>
+
+      <div class="tab-panel" id="tab-details">
+        <div class="panel__header">
+          <div>
+            <h2>素材 / 遮罩</h2>
+            <p>查看 15 角度图与 SAM3 可视化结果（用于确认 object_id）。</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label>
+            本地图片上传
+            <input id="angle-file" type="file" accept="image/*" />
+          </label>
+          <label>
+            图片 URL
+            <input id="angle-url" type="text" placeholder="https://..." />
+          </label>
+          <label>
+            文件夹命名（可选）
+            <input id="angle-name" type="text" placeholder="例如：actor_01" />
+          </label>
+          <button id="angle-generate" class="btn">生成 15 角度图</button>
+        </div>
+        <div class="status" id="angle-status"></div>
+        <details class="advanced">
+          <summary>查看已生成文件夹</summary>
+          <div class="form-grid">
+            <label>
+              选择文件夹
+              <select id="angle-folder"></select>
+            </label>
+            <button id="angle-show" class="btn btn-ghost">展示</button>
+          </div>
+          <div class="gallery" id="angle-gallery"></div>
+        </details>
+
+        <div class="divider"></div>
+
+        <div class="form-grid">
+          <label>
+            使用视频
+            <select id="infer-video"></select>
+          </label>
+          <label>
+            传播方式
+            <select id="sam3-direction">
+              <option value="forward">从第一帧正向传播</option>
+              <option value="both">从中间帧双向传播</option>
+              <option value="backward">从尾帧反向传播</option>
+            </select>
+          </label>
+          <label>
+            文本提示词（默认 person）
+            <input id="sam3-prompt" type="text" placeholder="person" />
+          </label>
+          <button id="sam3-run" class="btn">生成 SAM3 遮罩</button>
+        </div>
+        <div class="status" id="sam3-status"></div>
+        <div class="media" id="sam3-media"></div>
+
+        <details class="advanced">
+          <summary>高级参数</summary>
+          <div class="form-grid">
+            <label>
+              image_index
+              <input id="infer-index" type="text" value="0, 6, 5" />
+            </label>
+            <label>
+              mask_expand
+              <input id="infer-expand" type="number" value="40" />
+            </label>
+            <label>
+              block_size
+              <input id="infer-block" type="number" value="16" />
+            </label>
+            <label>
+              seed
+              <input id="infer-seed" type="number" value="28588" />
+            </label>
+          </div>
+        </details>
+      </div>
     </section>
   </main>
 

@@ -4,9 +4,9 @@ API 工作流位置：
 `user/default/workflows/换人_api.json`
 
 本项目已实现一个可展示的前端页面 + Python 后端，覆盖：
-1) 15 角度角色图生成
+1) 快速生成（上传/选择视频 + 选择角色图文件夹 → 一键生成）
 2) SAM3 视频分割可视化（方便查看 object_id）
-3) 换人推理结果展示（保持原工作流逻辑不变，仅暴露必要参数）
+3) 15 角度角色图生成与素材浏览
 
 ---
 
@@ -130,6 +130,10 @@ https://wavespeed.ai/docs/docs-api/wavespeed-ai/qwen-image-edit-multiple-angles
 4. **SAM3 使用已有视频**：\n
    - 新增 `/api/video/list` 接口读取 `input/` 内的视频（不限 mp4）\n
    - 前端可从下拉列表选择已有视频，无需每次上传\n
+
+5. **页面改为 Tab**：\n
+   - 主 Tab：只保留“视频 + 角色图 + object_id → 生成”\n
+   - 次 Tab：查看图片、SAM3 遮罩、以及高级参数\n
 
 ## ✅ 需要你确认的点
 1. `SHOW_ANIMATE_PUBLIC_URL` 暂时不用也可以\n
