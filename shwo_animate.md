@@ -105,3 +105,29 @@ API 工作流位置：
 ---
 
 如需调整样式、参数范围、或者工作流拆分方式，告诉我具体想法即可。
+
+# 功能调整
+1. 能够直接上传本地图片吗？ 这是对应的wavespeed的 doc页面，他好像不支持base64，还是你有别的办法？
+https://wavespeed.ai/docs/docs-api/wavespeed-ai/qwen-image-edit-multiple-angles
+2. 图片展示的部分默认隐藏起来，加个list可以选择展示哪个文件夹下的内容
+3. 进度可以显示一下
+
+## ✅ 已实现的功能调整
+1. **本地图片上传**：\n
+   - 前端新增“本地图片上传”按钮\n
+   - 服务端新增 `/api/image/upload`\n
+   - 需要设置 `SHOW_ANIMATE_PUBLIC_URL`，用于生成 WaveSpeed 可访问的公网 URL\n
+   - 若未设置，将提示错误\n
+
+2. **图片展示默认隐藏 + 可选择文件夹**：\n
+   - 图片展示收起在 `<details>` 中\n
+   - 增加下拉列表选择文件夹，并点击“展示”加载\n
+
+3. **进度显示**：\n
+   - 前端增加 loading 状态与提示（⏳）\n
+   - 请求执行期间显示“推理中/上传中/生成中”\n
+
+## ✅ 需要你确认的点
+1. `SHOW_ANIMATE_PUBLIC_URL` 填什么？\n
+   - 如果部署在公网：填外网地址（例如 `https://your.domain.com`）\n
+   - WaveSpeed 需要能够访问这个 URL 才能拉到图片\n

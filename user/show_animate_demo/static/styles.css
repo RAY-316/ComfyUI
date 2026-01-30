@@ -144,6 +144,15 @@ select:focus {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--stroke);
+  box-shadow: none;
+  text-transform: none;
+  letter-spacing: 0.03em;
+}
+
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 16px 32px rgba(238, 95, 63, 0.4);
@@ -153,6 +162,10 @@ select:focus {
   margin-top: 14px;
   font-size: 13px;
   color: rgba(17, 16, 20, 0.7);
+}
+
+.status[data-loading="true"]::after {
+  content: " ⏳";
 }
 
 .gallery {

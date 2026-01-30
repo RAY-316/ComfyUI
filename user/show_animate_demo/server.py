@@ -23,6 +23,7 @@ ANGLE_OUTPUT_DIR = BASE_DIR / "15_pictures" / "output"
 COMFY_URL = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
 SERVER_HOST = os.environ.get("SHOW_ANIMATE_HOST", "127.0.0.1")
 SERVER_PORT = int(os.environ.get("SHOW_ANIMATE_PORT", "8090"))
+PUBLIC_BASE_URL = os.environ.get("SHOW_ANIMATE_PUBLIC_URL")
 
 SAFE_NAME_RE = re.compile(r"[^a-zA-Z0-9._-]+")
 
@@ -247,6 +248,42 @@ async def handle_media(request: web.Request) -> web.Response:
     if not path.exists():
         raise web.HTTPNotFound(text="File not found")
     return web.FileResponse(path)
+
+
+async def handle_local_image(request: web.Request) -> web.Response:
+    filename = request.match_info["filename"]
+    path = (INPUT_DIR / filename).resolve()
+    if not str(path).startswith(str(INPUT_DIR.resolve())):
+        raise web.HTTPForbidden(text="Invalid path")
+    if not path.exists():
+        raise web.HTTPNotFound(text="File not found")
+    return web.FileResponse(path)
+
+
+async def handle_image_upload(request: web.Request) -> web.Response:
+    if not PUBLIC_BASE_URL:
+        raise web.HTTPBadRequest(
+            text="SHOW_ANIMATE_PUBLIC_URL is required to use local uploads with WaveSpeed."
+        )
+
+    reader = await request.multipart()
+    field = await reader.next()
+    if field is None or field.name != "file":
+        raise web.HTTPBadRequest(text="Missing file")
+
+    filename = safe_name(field.filename or "image.png", f"image_{int(time.time())}.png")
+    INPUT_DIR.mkdir(parents=True, exist_ok=True)
+    save_path = INPUT_DIR / filename
+
+    with save_path.open("wb") as f:
+        while True:
+            chunk = await field.read_chunk()
+            if not chunk:
+                break
+            f.write(chunk)
+
+    public_url = f"{PUBLIC_BASE_URL.rstrip('/')}/api/local_image/{filename}"
+    return web.json_response({"filename": filename, "url": public_url})
 
 
 async def handle_angles_list(request: web.Request) -> web.Response:
@@ -476,6 +513,8 @@ def create_app() -> web.Application:
     app.router.add_get("/", handle_index)
     app.router.add_get("/static/{filename}", handle_static)
     app.router.add_get("/api/media", handle_media)
+    app.router.add_get("/api/local_image/{filename}", handle_local_image)
+    app.router.add_post("/api/image/upload", handle_image_upload)
     app.router.add_get("/api/angles/list", handle_angles_list)
     app.router.add_get("/api/angles/files/{folder}/{filename}", handle_angle_file)
     app.router.add_post("/api/angles/generate", handle_angles_generate)
