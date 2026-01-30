@@ -14,7 +14,7 @@ from aiohttp import web
 import aiohttp
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-WORKFLOW_PATH = BASE_DIR / "user" / "default" / "workflows" / "base_换人5090.json"
+WORKFLOW_PATH = BASE_DIR / "user" / "default" / "workflows" / "换人_api.json"
 INPUT_DIR = BASE_DIR / "input"
 OUTPUT_DIR = BASE_DIR / "output"
 TEMP_DIR = BASE_DIR / "temp"
@@ -39,6 +39,13 @@ def load_multi_angle_module():
 
 async def read_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_prompt(workflow: dict) -> dict:
+    # API export already returns prompt dict (node_id -> {class_type, inputs})
+    if "nodes" not in workflow:
+        return workflow
+    return workflow_to_prompt(workflow)
 
 
 def safe_name(value: str, fallback: str) -> str:
@@ -345,7 +352,7 @@ async def handle_sam3_run(request: web.Request) -> web.Response:
         propagation = "forward"
 
     workflow = await read_json(WORKFLOW_PATH)
-    prompt = workflow_to_prompt(workflow)
+    prompt = load_prompt(workflow)
 
     # Node 2: VHS_LoadVideo
     prompt["2"]["inputs"].update({
@@ -418,7 +425,7 @@ async def handle_infer_run(request: web.Request) -> web.Response:
     fps = info.get("fps", 24) or 24
 
     workflow = await read_json(WORKFLOW_PATH)
-    prompt = workflow_to_prompt(workflow)
+    prompt = load_prompt(workflow)
 
     prompt["2"]["inputs"].update({
         "video": filename,
