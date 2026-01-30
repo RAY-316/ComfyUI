@@ -20,7 +20,7 @@ OUTPUT_DIR = BASE_DIR / "output"
 TEMP_DIR = BASE_DIR / "temp"
 ANGLE_OUTPUT_DIR = BASE_DIR / "15_pictures" / "output"
 
-COMFY_URL = os.environ.get("COMFY_URL", "http://127.0.0.1:8188")
+COMFY_URL = os.environ.get("COMFY_URL", "http://127.0.0.1:8055")
 SERVER_HOST = os.environ.get("SHOW_ANIMATE_HOST", "127.0.0.1")
 SERVER_PORT = int(os.environ.get("SHOW_ANIMATE_PORT", "8090"))
 

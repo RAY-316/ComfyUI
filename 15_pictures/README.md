@@ -24,11 +24,13 @@ yy_url: https://kaito-1328216764.cos.ap-tokyo.myqcloud.com/uploads/image/15032ef
 
 杨幂: https://kaito-1328216764.cos.ap-tokyo.myqcloud.com/uploads/image/15032ef6-def4-4b1f-9f37-6322326d9afc/2026-01-14/ef09c682413a.jpg
 
+网红： https://kaito-1328216764.cos.ap-tokyo.myqcloud.com/uploads/image/15032ef6-def4-4b1f-9f37-6322326d9afc/2026-01-30/1c6a9c99fbdf.webp
+
 ## 使用方法
 
 ```bash
 # 基本用法
-python multi_angle_generator.py "https://kaito-1328216764.cos.ap-tokyo.myqcloud.com/uploads/image/15032ef6-def4-4b1f-9f37-6322326d9afc/2026-01-14/ef09c682413a.jpg"
+python multi_angle_generator.py "https://kaito-1328216764.cos.ap-tokyo.myqcloud.com/uploads/image/15032ef6-def4-4b1f-9f37-6322326d9afc/2026-01-30/1c6a9c99fbdf.webp"
 
 # 生成拼图
 python multi_angle_generator.py "https://your-image-url.jpg" --grid
