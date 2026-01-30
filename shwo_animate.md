@@ -132,8 +132,13 @@ https://wavespeed.ai/docs/docs-api/wavespeed-ai/qwen-image-edit-multiple-angles
    - 前端可从下拉列表选择已有视频，无需每次上传\n
 
 5. **页面改为 Tab**：\n
-   - 主 Tab：只保留“视频 + 角色图 + object_id → 生成”\n
+   - 主 Tab：默认只显示“视频 + 角色图 → 生成”，object_id 等参数在高级里\n
    - 次 Tab：查看图片、SAM3 遮罩、以及高级参数\n
+
+6. **快速生成自动跑 SAM3**：\n
+   - 快速生成会先跑 SAM3（默认 forward + prompt=person）\n
+   - SAM3 可视化结果会同步到「图片 / 遮罩」页\n
+   - 主 Tab 增加原始视频预览\n
 
 ## ✅ 需要你确认的点
 1. `SHOW_ANIMATE_PUBLIC_URL` 暂时不用也可以\n

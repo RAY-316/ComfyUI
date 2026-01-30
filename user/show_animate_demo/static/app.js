@@ -156,6 +156,13 @@ async function uploadVideo(file) {
   });
   setLoading(status, false);
   setStatus(status, `上传完成：${data.filename}`);
+  updateVideoPreview(state.currentVideo);
+}
+
+function updateVideoPreview(filename) {
+  const preview = qs("quick-video-preview");
+  if (!preview || !filename) return;
+  preview.src = `/api/media?type=input&filename=${encodeURIComponent(filename)}`;
 }
 
 async function loadInputVideos() {
@@ -183,6 +190,7 @@ async function loadInputVideos() {
   if (!state.currentVideo && state.videos[0]) {
     state.currentVideo = state.videos[0];
     sam3Select.value = state.currentVideo;
+    updateVideoPreview(state.currentVideo);
   }
 }
 
@@ -214,6 +222,23 @@ async function handleSam3Run() {
   }
 }
 
+async function runSam3ForQuick(videoFilename) {
+  const status = qs("sam3-status");
+  setStatus(status, "SAM3 遮罩生成中…");
+  setLoading(status, true);
+  const data = await fetchJSON("/api/sam3/run", {
+    method: "POST",
+    body: JSON.stringify({
+      video_filename: videoFilename,
+      direction: "forward",
+      prompt: "person",
+    }),
+  });
+  setLoading(status, false);
+  setStatus(status, "SAM3 可视化完成，可在遮罩页查看");
+  renderMedia(qs("sam3-media"), data.media);
+}
+
 async function handleInferRun() {
   const status = qs("infer-status");
   const video = state.currentVideo || qs("infer-video").value;
@@ -231,9 +256,11 @@ async function handleInferRun() {
     block_size: qs("infer-block").value,
     seed: qs("infer-seed").value,
   };
-  setStatus(status, "换人推理中…");
+  setStatus(status, "快速生成：先生成 SAM3 遮罩…");
   setLoading(status, true);
   try {
+    await runSam3ForQuick(video);
+    setStatus(status, "遮罩完成，开始换人推理…");
     const data = await fetchJSON("/api/infer/run", {
       method: "POST",
       body: JSON.stringify(payload),
@@ -281,10 +308,36 @@ async function init() {
   qs("sam3-video-list").addEventListener("change", (event) => {
     state.currentVideo = event.target.value;
     setStatus(qs("sam3-status"), `已选择视频：${state.currentVideo}`);
+    updateVideoPreview(state.currentVideo);
   });
 
   await loadAngleFolders();
   await loadInputVideos();
+
+  // Two-way sync between quick-tab advanced inputs and detail-tab advanced inputs
+  const pairs = [
+    ["infer-index", "infer-index-view"],
+    ["infer-expand", "infer-expand-view"],
+    ["infer-block", "infer-block-view"],
+    ["infer-seed", "infer-seed-view"],
+    ["infer-object", "infer-object-view"],
+  ];
+
+  const syncPair = (fromId, toId) => {
+    const src = qs(fromId);
+    const dst = qs(toId);
+    if (src && dst) dst.value = src.value;
+  };
+
+  pairs.forEach(([a, b]) => {
+    const elA = qs(a);
+    const elB = qs(b);
+    if (elA && elB) {
+      elA.addEventListener("input", () => syncPair(a, b));
+      elB.addEventListener("input", () => syncPair(b, a));
+      syncPair(a, b);
+    }
+  });
 }
 
 init();

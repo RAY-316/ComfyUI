@@ -47,13 +47,37 @@
           角色图文件夹
           <select id="infer-character"></select>
         </label>
-        <label>
-          object_id
-          <input id="infer-object" type="number" value="0" />
-        </label>
         <button id="infer-run" class="btn">开始生成</button>
       </div>
+      <details class="advanced">
+        <summary>高级参数</summary>
+        <div class="form-grid">
+          <label>
+            object_id
+            <input id="infer-object" type="number" value="0" />
+          </label>
+          <label>
+            image_index
+            <input id="infer-index" type="text" value="0, 6, 5" />
+          </label>
+          <label>
+            mask_expand
+            <input id="infer-expand" type="number" value="40" />
+          </label>
+          <label>
+            block_size
+            <input id="infer-block" type="number" value="16" />
+          </label>
+          <label>
+            seed
+            <input id="infer-seed" type="number" value="28588" />
+          </label>
+        </div>
+      </details>
       <div class="status" id="infer-status"></div>
+      <div class="media">
+        <video id="quick-video-preview" controls></video>
+      </div>
       <div class="media" id="infer-media"></div>
       </div>
 
@@ -121,19 +145,23 @@
           <div class="form-grid">
             <label>
               image_index
-              <input id="infer-index" type="text" value="0, 6, 5" />
+              <input id="infer-index-view" type="text" value="0, 6, 5" />
             </label>
             <label>
               mask_expand
-              <input id="infer-expand" type="number" value="40" />
+              <input id="infer-expand-view" type="number" value="40" />
             </label>
             <label>
               block_size
-              <input id="infer-block" type="number" value="16" />
+              <input id="infer-block-view" type="number" value="16" />
             </label>
             <label>
               seed
-              <input id="infer-seed" type="number" value="28588" />
+              <input id="infer-seed-view" type="number" value="28588" />
+            </label>
+            <label>
+              object_id
+              <input id="infer-object-view" type="number" value="0" />
             </label>
           </div>
         </details>

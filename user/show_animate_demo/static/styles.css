@@ -231,6 +231,11 @@ select:focus {
   background: #fff;
 }
 
+#quick-video-preview {
+  max-height: 360px;
+  object-fit: contain;
+}
+
 .advanced {
   margin-top: 14px;
   border: 1px dashed rgba(17, 16, 20, 0.2);
