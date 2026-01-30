@@ -1,0 +1,107 @@
+# Wan Animate 2.2 换人展示项目说明
+
+工作流位置：
+`user/default/workflows/base_换人5090.json`
+
+本项目已实现一个可展示的前端页面 + Python 后端，覆盖：
+1) 15 角度角色图生成
+2) SAM3 视频分割可视化（方便查看 object_id）
+3) 换人推理结果展示（保持原工作流逻辑不变，仅暴露必要参数）
+
+---
+
+## ✅ 新增展示项目位置
+`user/show_animate_demo/`
+
+- `server.py`：后端（aiohttp），负责调用 ComfyUI API
+- `static/index.html`：展示页
+- `static/styles.css`：UI 样式
+- `static/app.js`：前端逻辑
+
+---
+
+## ✅ 启动方式
+1. 启动 ComfyUI（默认 8188）：
+   ```bash
+   python3 main.py
+   ```
+
+2. 启动展示项目：
+   ```bash
+   python3 user/show_animate_demo/server.py
+   ```
+
+3. 打开浏览器：
+   ```
+   http://127.0.0.1:8090
+   ```
+
+---
+
+## ✅ 当前功能说明
+
+### ① 15角度角色图生成
+- 输入 URL → 调用 `15_pictures/multi_angle_generator.py`
+- 生成结果输出到：`15_pictures/output/<folder>`
+- 前端自动展示该文件夹下 15 张图片
+- 支持自定义文件夹名字（不填则用时间戳）
+
+### ② SAM3 视频分割
+- 上传视频 → 选择传播方式：
+  - 从第一帧正向传播 (forward)
+  - 从中间帧双向传播 (both)
+  - 从尾帧反向传播 (backward)
+- 推理结束后展示可视化视频（带 object_id）
+
+### ③ 换人推理
+- 选视频 + 角色图文件夹 + object_id
+- 保留原工作流推理逻辑
+- 暴露参数：
+  - image_index（默认：`0, 6, 5`）
+  - mask_expand
+  - block_size
+  - seed
+  - object_id 必填（其余参数在“高级”里可改）
+
+---
+
+## ✅ 视频规格处理（自动）
+- 如果短边 > 640 → 自动 resize 到 640
+- 长边等比例缩放
+- `VHS_LoadVideo.force_rate` 与 `SaveVideoRGBA.fps` 保持一致
+
+> 注意：该逻辑依赖 `ffprobe`，若系统无 ffprobe 请补充安装
+
+---
+
+## ✅ 后端调用逻辑
+- 通过 ComfyUI `/prompt` API 调用 workflow
+- 使用 `partial_execution_targets`：
+  - SAM3 可视化只执行 node 174
+  - 换人推理只执行 node 173
+- Workflow 参数更新节点：
+  - Node 2: `VHS_LoadVideo`
+  - Node 3: `easy sam3VideoSegmentation`
+  - Node 179: `ParameterWidget`
+  - Node 182: `CharacterConfigWidget`
+  - Node 173/174: `SaveVideoRGBA`
+
+---
+
+## ✅ 环境变量（可选）
+- `COMFY_URL`：ComfyUI API 地址（默认 `http://127.0.0.1:8188`）
+- `SHOW_ANIMATE_PORT`：展示页端口（默认 `8090`）
+- `WAVESPEED_API_KEY`：15 角度生图 API key（可覆盖脚本内的默认值）
+
+---
+
+## ✅ 待确认 / 可扩展
+如果你希望进一步完善，我可以继续扩展：
+1. 支持视频列表记忆（页面刷新不丢）
+2. SAM3 分割后自动提取 object_id 列表并展示
+3. 支持从前端上传角色图（不依赖 URL）
+4. 支持进度显示 / 队列状态
+
+---
+
+如需调整样式、参数范围、或者工作流拆分方式，告诉我具体想法即可。

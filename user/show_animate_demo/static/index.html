@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wan Animate 2.2 换人展示</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+  <header class="hero">
+    <div class="hero__content">
+      <span class="eyebrow">WAN ANIMATE 2.2 · SHOWCASE</span>
+      <h1>换人工作流 · 可视化展示台</h1>
+      <p>三步完成：15角度角色图 → SAM3 分割 → 模型推理。目标是让用户一眼看懂、直接上手。</p>
+      <div class="hero__meta">
+        <span>视频短边 > 640 会自动缩放</span>
+        <span>fps 自动对齐到同一设置</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <div class="panel__header">
+        <div>
+          <h2>1. 15角度角色图生成</h2>
+          <p>输入图片 URL，生成 15 张视角图，结果会落在 <code>15_pictures/output</code> 下。</p>
+        </div>
+      </div>
+      <div class="form-grid">
+        <label>
+          图片 URL
+          <input id="angle-url" type="text" placeholder="https://..." />
+        </label>
+        <label>
+          文件夹命名（可选）
+          <input id="angle-name" type="text" placeholder="例如：actor_01" />
+        </label>
+        <button id="angle-generate" class="btn">开始生成</button>
+      </div>
+      <div class="status" id="angle-status"></div>
+      <div class="gallery" id="angle-gallery"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__header">
+        <div>
+          <h2>2. SAM3 视频分割</h2>
+          <p>上传视频，选择传播方向，查看可视化结果与 object_id。</p>
+        </div>
+      </div>
+      <div class="form-grid">
+        <label>
+          上传视频
+          <input id="sam3-video" type="file" accept="video/*" />
+        </label>
+        <label>
+          传播方式
+          <select id="sam3-direction">
+            <option value="forward">从第一帧正向传播</option>
+            <option value="both">从中间帧双向传播</option>
+            <option value="backward">从尾帧反向传播</option>
+          </select>
+        </label>
+        <label>
+          文本提示词（默认 person）
+          <input id="sam3-prompt" type="text" placeholder="person" />
+        </label>
+        <button id="sam3-run" class="btn">开始分割</button>
+      </div>
+      <div class="status" id="sam3-status"></div>
+      <div class="media" id="sam3-media"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel__header">
+        <div>
+          <h2>3. 换人推理</h2>
+          <p>选择角色图文件夹与 object_id，保持流程不变，仅暴露核心参数。</p>
+        </div>
+      </div>
+      <div class="form-grid">
+        <label>
+          使用视频
+          <select id="infer-video"></select>
+        </label>
+        <label>
+          角色图文件夹
+          <select id="infer-character"></select>
+        </label>
+        <label>
+          object_id
+          <input id="infer-object" type="number" value="0" />
+        </label>
+        <label>
+          image_index
+          <input id="infer-index" type="text" value="0, 6, 5" />
+        </label>
+        <button id="infer-run" class="btn">开始推理</button>
+      </div>
+      <details class="advanced">
+        <summary>高级参数</summary>
+        <div class="form-grid">
+          <label>
+            mask_expand
+            <input id="infer-expand" type="number" value="40" />
+          </label>
+          <label>
+            block_size
+            <input id="infer-block" type="number" value="16" />
+          </label>
+          <label>
+            seed
+            <input id="infer-seed" type="number" value="28588" />
+          </label>
+        </div>
+      </details>
+      <div class="status" id="infer-status"></div>
+      <div class="media" id="infer-media"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>ComfyUI workflow: base_换人5090.json</span>
+    <span>前端展示专用 · 可按需扩展</span>
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
