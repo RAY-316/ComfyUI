@@ -28,6 +28,7 @@ if pm2 list | grep -q "$APP_NAME"; then
     pm2 restart "$APP_NAME"
 else
     echo "Starting $APP_NAME..."
+    export SHOW_ANIMATE_HOST="0.0.0.0"
     export SHOW_ANIMATE_PORT="$PORT"
     pm2 start user/show_animate_demo/server.py \
       --name "$APP_NAME" \
