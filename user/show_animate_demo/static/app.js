@@ -202,6 +202,8 @@ async function handleSam3Run() {
   }
   const direction = qs("sam3-direction").value;
   const prompt = qs("sam3-prompt").value.trim() || "person";
+  const scoreThresh = parseFloat(qs("sam3-score-thresh-view").value) || 0.64;
+  const newDetThresh = parseFloat(qs("sam3-new-det-thresh-view").value) || 0.9;
   setStatus(status, "SAM3 推理中…");
   setLoading(status, true);
   try {
@@ -211,6 +213,8 @@ async function handleSam3Run() {
         video_filename: state.currentVideo,
         direction,
         prompt,
+        score_threshold_detection: scoreThresh,
+        new_det_thresh: newDetThresh,
       }),
     });
     setLoading(status, false);
@@ -222,16 +226,28 @@ async function handleSam3Run() {
   }
 }
 
+function getSam3Params() {
+  // Get SAM3 params from main page (synced with detail page)
+  const prompt = qs("sam3-prompt-main").value.trim() || "person";
+  const direction = qs("sam3-direction-main").value || "forward";
+  const scoreThresh = parseFloat(qs("sam3-score-thresh").value) || 0.64;
+  const newDetThresh = parseFloat(qs("sam3-new-det-thresh").value) || 0.9;
+  return { prompt, direction, scoreThresh, newDetThresh };
+}
+
 async function runSam3ForQuick(videoFilename) {
   const status = qs("sam3-status");
+  const sam3Params = getSam3Params();
   setStatus(status, "SAM3 遮罩生成中…");
   setLoading(status, true);
   const data = await fetchJSON("/api/sam3/run", {
     method: "POST",
     body: JSON.stringify({
       video_filename: videoFilename,
-      direction: "forward",
-      prompt: "person",
+      direction: sam3Params.direction,
+      prompt: sam3Params.prompt,
+      score_threshold_detection: sam3Params.scoreThresh,
+      new_det_thresh: sam3Params.newDetThresh,
     }),
   });
   setLoading(status, false);
@@ -247,6 +263,7 @@ async function handleInferRun() {
     setStatus(status, "请选择视频和角色图文件夹", "warn");
     return;
   }
+  const sam3Params = getSam3Params();
   const payload = {
     video_filename: video,
     character_folder: character,
@@ -255,6 +272,11 @@ async function handleInferRun() {
     mask_expand: qs("infer-expand").value,
     block_size: qs("infer-block").value,
     seed: qs("infer-seed").value,
+    // SAM3 params for cache consistency
+    sam3_prompt: sam3Params.prompt,
+    sam3_direction: sam3Params.direction,
+    score_threshold_detection: sam3Params.scoreThresh,
+    new_det_thresh: sam3Params.newDetThresh,
   };
   setStatus(status, "快速生成：先生成 SAM3 遮罩…");
   setLoading(status, true);
@@ -321,6 +343,11 @@ async function init() {
     ["infer-block", "infer-block-view"],
     ["infer-seed", "infer-seed-view"],
     ["infer-object", "infer-object-view"],
+    // SAM3 params sync between main page and detail page
+    ["sam3-prompt-main", "sam3-prompt"],
+    ["sam3-direction-main", "sam3-direction"],
+    ["sam3-score-thresh", "sam3-score-thresh-view"],
+    ["sam3-new-det-thresh", "sam3-new-det-thresh-view"],
   ];
 
   const syncPair = (fromId, toId) => {
@@ -335,6 +362,9 @@ async function init() {
     if (elA && elB) {
       elA.addEventListener("input", () => syncPair(a, b));
       elB.addEventListener("input", () => syncPair(b, a));
+      // Also sync on change event for select elements
+      elA.addEventListener("change", () => syncPair(a, b));
+      elB.addEventListener("change", () => syncPair(b, a));
       syncPair(a, b);
     }
   });

@@ -73,6 +73,31 @@
             <input id="infer-seed" type="number" value="28588" />
           </label>
         </div>
+        <details class="advanced" style="margin-top: 1rem;">
+          <summary>SAM3 检测参数</summary>
+          <div class="form-grid">
+            <label>
+              检测提示词
+              <input id="sam3-prompt-main" type="text" value="person" placeholder="person" />
+            </label>
+            <label>
+              传播方向
+              <select id="sam3-direction-main">
+                <option value="forward">从第一帧正向传播</option>
+                <option value="both">从中间帧双向传播</option>
+                <option value="backward">从尾帧反向传播</option>
+              </select>
+            </label>
+            <label>
+              检测分数阈值
+              <input id="sam3-score-thresh" type="number" value="0.64" step="0.05" min="0" max="1" />
+            </label>
+            <label>
+              新检测阈值
+              <input id="sam3-new-det-thresh" type="number" value="0.9" step="0.05" min="0" max="1" />
+            </label>
+          </div>
+        </details>
       </details>
       <div class="status" id="infer-status"></div>
       <div class="media">
@@ -134,6 +159,14 @@
           <label>
             文本提示词（默认 person）
             <input id="sam3-prompt" type="text" placeholder="person" />
+          </label>
+          <label>
+            检测分数阈值
+            <input id="sam3-score-thresh-view" type="number" value="0.64" step="0.05" min="0" max="1" />
+          </label>
+          <label>
+            新检测阈值
+            <input id="sam3-new-det-thresh-view" type="number" value="0.9" step="0.05" min="0" max="1" />
           </label>
           <button id="sam3-run" class="btn">生成 SAM3 遮罩</button>
         </div>

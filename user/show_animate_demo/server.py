@@ -373,6 +373,8 @@ async def handle_sam3_run(request: web.Request) -> web.Response:
     filename = data.get("video_filename", "")
     direction = data.get("direction", "forward")
     prompt_text = data.get("prompt", "person")
+    score_threshold = float(data.get("score_threshold_detection", 0.64))
+    new_det_thresh = float(data.get("new_det_thresh", 0.9))
 
     if not filename:
         raise web.HTTPBadRequest(text="video_filename is required")
@@ -416,6 +418,8 @@ async def handle_sam3_run(request: web.Request) -> web.Response:
         "frame_index": frame_index,
         "propagation_direction": propagation,
         "start_frame_index": frame_index,
+        "score_threshold_detection": score_threshold,
+        "new_det_thresh": new_det_thresh,
     })
 
     # Node 174: SaveVideoRGBA fps
@@ -452,6 +456,12 @@ async def handle_infer_run(request: web.Request) -> web.Response:
     block_size = int(data.get("block_size", 16))
     seed = int(data.get("seed", 28588))
 
+    # SAM3 parameters (for cache consistency with sam3/run)
+    sam3_prompt = data.get("sam3_prompt", "person")
+    sam3_direction = data.get("sam3_direction", "forward")
+    score_threshold = float(data.get("score_threshold_detection", 0.64))
+    new_det_thresh = float(data.get("new_det_thresh", 0.9))
+
     if not filename:
         raise web.HTTPBadRequest(text="video_filename is required")
     if not character_folder:
@@ -471,6 +481,18 @@ async def handle_infer_run(request: web.Request) -> web.Response:
 
     width, height = compute_resize(info["width"], info["height"], 640)
     fps = info.get("fps", 24) or 24
+    frame_count = info.get("frame_count", 0)
+
+    # Calculate frame_index based on direction (same logic as sam3/run)
+    if sam3_direction == "both":
+        frame_index = max(frame_count // 2, 0)
+        propagation = "both"
+    elif sam3_direction == "backward":
+        frame_index = max(frame_count - 1, 0)
+        propagation = "backward"
+    else:
+        frame_index = 0
+        propagation = "forward"
 
     workflow = await read_json(WORKFLOW_PATH)
     prompt = load_prompt(workflow)
@@ -480,6 +502,16 @@ async def handle_infer_run(request: web.Request) -> web.Response:
         "force_rate": fps,
         "custom_width": width,
         "custom_height": height,
+    })
+
+    # Node 3: easy sam3VideoSegmentation (must match sam3/run for cache hit)
+    prompt["3"]["inputs"].update({
+        "prompt": sam3_prompt,
+        "frame_index": frame_index,
+        "propagation_direction": propagation,
+        "start_frame_index": frame_index,
+        "score_threshold_detection": score_threshold,
+        "new_det_thresh": new_det_thresh,
     })
 
     # CharacterConfigWidget

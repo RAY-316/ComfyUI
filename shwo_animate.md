@@ -143,3 +143,27 @@ https://wavespeed.ai/docs/docs-api/wavespeed-ai/qwen-image-edit-multiple-angles
 ## ✅ 需要你确认的点
 1. `SHOW_ANIMATE_PUBLIC_URL` 暂时不用也可以\n
    - 只有“本地图片上传”需要公网可访问 URL\n
+
+---
+
+## ✅ SAM3 参数改进（新增）
+
+### 问题背景
+- `propagate_in_video` 是 SAM3 视频分割的核心过程，逐帧传播检测结果
+- 如果 `direction=both`（双向传播），会出现两次进度条
+- 之前快速生成页面硬编码 SAM3 参数，无法复用缓存
+
+### 已改进
+1. **新增检测阈值参数**：
+   - `score_threshold_detection`（检测分数阈值，默认 0.64）：过滤低置信度检测
+   - `new_det_thresh`（新检测阈值，默认 0.9）：决定何时添加新对象
+
+2. **两个页面参数双向同步**：
+   - 主页面高级参数 → SAM3 检测参数（prompt、direction、两个阈值）
+   - 图片/遮罩页面 ↔ 主页面：所有参数双向同步
+   - 改一处，另一处自动更新
+
+3. **缓存一致性**：
+   - 先在遮罩页面运行 SAM3 → 快速生成可复用缓存
+   - 换视频 → 一定重新计算（符合预期）
+   - 同一视频、相同参数 → 使用缓存
