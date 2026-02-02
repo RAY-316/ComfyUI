@@ -189,7 +189,11 @@ async function loadInputVideos() {
 
   if (!state.currentVideo && state.videos[0]) {
     state.currentVideo = state.videos[0];
+  }
+  // Sync video selection to both pages
+  if (state.currentVideo) {
     sam3Select.value = state.currentVideo;
+    inferSelect.value = state.currentVideo;
     updateVideoPreview(state.currentVideo);
   }
 }
@@ -331,6 +335,19 @@ async function init() {
     state.currentVideo = event.target.value;
     setStatus(qs("sam3-status"), `已选择视频：${state.currentVideo}`);
     updateVideoPreview(state.currentVideo);
+    // Sync to detail page video select
+    const inferVideo = qs("infer-video");
+    if (inferVideo) inferVideo.value = state.currentVideo;
+  });
+
+  // Detail page video select also updates state.currentVideo
+  qs("infer-video").addEventListener("change", (event) => {
+    state.currentVideo = event.target.value;
+    setStatus(qs("sam3-status"), `已选择视频：${state.currentVideo}`);
+    updateVideoPreview(state.currentVideo);
+    // Sync to main page video select
+    const sam3VideoList = qs("sam3-video-list");
+    if (sam3VideoList) sam3VideoList.value = state.currentVideo;
   });
 
   await loadAngleFolders();
