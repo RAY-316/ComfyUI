@@ -114,7 +114,7 @@ async def queue_prompt(session: aiohttp.ClientSession, prompt: dict, targets: li
     return data["prompt_id"]
 
 
-async def wait_for_history(session: aiohttp.ClientSession, prompt_id: str, timeout: int = 60 * 30) -> dict:
+async def wait_for_history(session: aiohttp.ClientSession, prompt_id: str, timeout: int = 60 * 60) -> dict:
     deadline = time.time() + timeout
     while time.time() < deadline:
         async with session.get(f"{COMFY_URL}/history/{prompt_id}") as resp:

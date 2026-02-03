@@ -231,11 +231,12 @@ async function handleSam3Run() {
 }
 
 function getSam3Params() {
-  // Get SAM3 params from main page (synced with detail page)
-  const prompt = qs("sam3-prompt-main").value.trim() || "person";
-  const direction = qs("sam3-direction-main").value || "forward";
-  const scoreThresh = parseFloat(qs("sam3-score-thresh").value) || 0.64;
-  const newDetThresh = parseFloat(qs("sam3-new-det-thresh").value) || 0.9;
+  // Get SAM3 params from detail page (primary source for SAM3 settings)
+  // These are also synced to main page, but read from detail page to ensure latest values
+  const prompt = qs("sam3-prompt").value.trim() || "person";
+  const direction = qs("sam3-direction").value || "forward";
+  const scoreThresh = parseFloat(qs("sam3-score-thresh-view").value) || 0.64;
+  const newDetThresh = parseFloat(qs("sam3-new-det-thresh-view").value) || 0.9;
   return { prompt, direction, scoreThresh, newDetThresh };
 }
 
